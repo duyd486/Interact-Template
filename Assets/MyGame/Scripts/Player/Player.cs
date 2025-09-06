@@ -5,13 +5,24 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private float rotateSpeed = 1f;
-    [SerializeField] private bool isWalking = true;
+    //[SerializeField] private float rotateSpeed = 1f;
 
 
-    private void Update()
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private float mouseSensitivity = 2f;
+    [SerializeField] private float lookRange = 80f;
+    private float verticalRotation = 0f;
+
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void LateUpdate()
     {
         HandleMovement();
+        HandleCamera();
     }
 
     private void HandleMovement()
@@ -19,7 +30,6 @@ public class Player : MonoBehaviour
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
         float moveDistance = moveSpeed * Time.deltaTime;
 
-        Transform cameraTransform = Camera.main.transform;
         Vector3 inputDir = new Vector3(inputVector.x, 0f, inputVector.y);
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
@@ -31,12 +41,24 @@ public class Player : MonoBehaviour
 
         Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized;
 
+
+        // Di chuyển
         transform.position += moveDir * moveDistance;
 
-        isWalking = moveDir != Vector3.zero;
+        //transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+    }
 
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+    private void HandleCamera()
+    {
+        Debug.Log(GameInput.Instance.GetLookVectorNormalized());
+        Vector2 lookInput = GameInput.Instance.GetLookVectorNormalized();
 
+        // Xoay cam theo chiều ngang
+        cameraTransform.Rotate(-Mathf.Clamp(lookInput.y, -lookRange, lookRange) * mouseSensitivity, lookInput.x * mouseSensitivity, 0);
+
+        // Xoay cam theo chiều dọc
+        verticalRotation -= lookInput.y;
+        cameraTransform.localRotation = Quaternion.Euler(Mathf.Clamp(verticalRotation, -lookRange, lookRange) * mouseSensitivity, cameraTransform.localEulerAngles.y, 0);
     }
 
 }

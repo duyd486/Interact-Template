@@ -27,4 +27,12 @@ public class GameInput : MonoBehaviour
 
         return inputVector;
     }
+    public Vector2 GetLookVectorNormalized()
+    {
+        Vector2 inputVector = playerInputAction.Player.Look.ReadValue<Vector2>();
+
+        inputVector = inputVector.normalized;
+
+        return inputVector;
+    }
 }
