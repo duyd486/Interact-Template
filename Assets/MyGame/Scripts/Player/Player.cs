@@ -19,10 +19,11 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         HandleMovement();
         HandleCamera();
+        
     }
 
     private void HandleMovement()
@@ -40,7 +41,6 @@ public class Player : MonoBehaviour
         cameraRight.Normalize();
 
         Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized;
-
 
         // Di chuyển
         transform.position += moveDir * moveDistance;
