@@ -840,7 +840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   cameraTransform: {fileID: 2135771611}
-  mouseSensitivity: 10
+  mouseSensitivity: 0.4
   lookRange: 80
 --- !u!54 &1650969315
 Rigidbody:
