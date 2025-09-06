@@ -53,12 +53,13 @@ public class Player : MonoBehaviour
         Debug.Log(GameInput.Instance.GetLookVectorNormalized());
         Vector2 lookInput = GameInput.Instance.GetLookVectorNormalized();
 
-        // Xoay cam theo chiều ngang
-        cameraTransform.Rotate(-Mathf.Clamp(lookInput.y, -lookRange, lookRange) * mouseSensitivity, lookInput.x * mouseSensitivity, 0);
+        // Xoay body theo chiều ngang
+        transform.Rotate(0, lookInput.x * mouseSensitivity, 0);
 
         // Xoay cam theo chiều dọc
         verticalRotation -= lookInput.y;
-        cameraTransform.localRotation = Quaternion.Euler(Mathf.Clamp(verticalRotation, -lookRange, lookRange) * mouseSensitivity, cameraTransform.localEulerAngles.y, 0);
+        verticalRotation = Mathf.Clamp(verticalRotation, -lookRange, lookRange);
+        cameraTransform.localRotation = Quaternion.Euler(verticalRotation * mouseSensitivity, cameraTransform.localEulerAngles.y, 0);
     }
 
 }
