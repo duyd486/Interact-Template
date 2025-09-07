@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,10 +13,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float lookRange = 80f;
     private float verticalRotation = 0f;
+    private Rigidbody rb;
 
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -29,7 +32,6 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
-        float moveDistance = moveSpeed * Time.deltaTime;
 
         Vector3 inputDir = new Vector3(inputVector.x, 0f, inputVector.y);
         Vector3 cameraForward = cameraTransform.forward;
@@ -43,14 +45,15 @@ public class Player : MonoBehaviour
         Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized;
 
         // Di chuyển
-        transform.position += moveDir * moveDistance;
+        //transform.position += moveDir * moveSpeed;
+        //rb.AddForce(moveDir * moveSpeed);
+        rb.linearVelocity = moveDir * moveSpeed;
 
         //transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
     private void HandleCamera()
     {
-        Debug.Log(GameInput.Instance.GetLookVectorNormalized());
         Vector2 lookInput = GameInput.Instance.GetLookVectorNormalized();
 
         // Xoay body theo chiều ngang
