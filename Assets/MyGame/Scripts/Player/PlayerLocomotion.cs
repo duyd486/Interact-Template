@@ -2,7 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerLocomotion : MonoBehaviour
 {
 
     [SerializeField] private float moveSpeed = 7f;
@@ -25,7 +25,9 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         HandleMovement();
-        HandleCamera();
+
+        //Nếu muốn di chuyển camera tự code thì gỡ comment dòng dưới và xóa các component cinemachine
+        //HandleCamera();
         
     }
 
