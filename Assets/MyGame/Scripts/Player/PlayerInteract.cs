@@ -27,15 +27,12 @@ public class PlayerInteract : MonoBehaviour
 
         Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance))
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance) && hit.transform.GetComponentInParent<IInteractable>() != null)
         {
-            if (hit.transform.GetComponentInParent<IInteractable>() != null)
+            canInteract = true;
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                canInteract = true;
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    hit.transform.GetComponentInParent<IInteractable>().Interact();
-                }
+                hit.transform.GetComponentInParent<IInteractable>().Interact();
             }
         } else
         {
