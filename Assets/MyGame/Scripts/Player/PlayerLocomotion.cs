@@ -44,12 +44,13 @@ public class PlayerLocomotion : MonoBehaviour
         cameraForward.Normalize();
         cameraRight.Normalize();
 
-        Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized;
+        Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized * moveSpeed;
+        moveDir.y = rb.linearVelocity.y;
 
         // Di chuyển
         //transform.position += moveDir * moveSpeed;
         //rb.AddForce(moveDir * moveSpeed);
-        rb.linearVelocity = moveDir * moveSpeed;
+        rb.linearVelocity = moveDir;
 
         //transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
