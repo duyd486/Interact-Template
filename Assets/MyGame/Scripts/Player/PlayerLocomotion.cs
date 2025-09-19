@@ -14,12 +14,14 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float lookRange = 80f;
     private float verticalRotation = 0f;
     private Rigidbody rb;
+    private Vector3 cameraOriginPosition;
 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        cameraOriginPosition = cameraTransform.localPosition;
     }
 
     private void FixedUpdate()
@@ -41,8 +43,6 @@ public class PlayerLocomotion : MonoBehaviour
 
         cameraForward.y = 0f;
         cameraRight.y = 0f;
-        cameraForward.Normalize();
-        cameraRight.Normalize();
 
         Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized * moveSpeed;
         moveDir.y = rb.linearVelocity.y;
@@ -51,6 +51,7 @@ public class PlayerLocomotion : MonoBehaviour
         //transform.position += moveDir * moveSpeed;
         //rb.AddForce(moveDir * moveSpeed);
         rb.linearVelocity = moveDir;
+        cameraTransform.localPosition = cameraOriginPosition;
 
         //transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
